@@ -3,16 +3,20 @@ function range(start, end, step) {
     var ascending;
     var descending;    
     if (start < end) {
-        if (step === undefined) {
-             step = 1;
+        // loop for cases in which the range start number is smaller than the range end.
+        if (typeof step === "undefined") {
+            // "smthng === undefined" IS A NO NO
+             step = 1; 
+        // the argument is already automatically defined as a variable by JS. no need to explicitly assign it again.
+
         }
 
         for (ascending = start; ascending <= end; ascending += step) {
             allnum.push(ascending);
         }
 
-    } else if (start > end) {
-        if (step === undefined) {
+    } else if (start > end) {  // loop for cases in which the range start number is larger than the range end 
+        if (typeof step === "undefined") {
              step = -1;
         }
 
@@ -28,8 +32,8 @@ function range(start, end, step) {
 
 function sum(array1)	{
     var total = 0; 
-
-    for (var i in array1) {
+    var i;
+    for (i = 0; i < array1.length; i++) {
         total += array1[i];
     } 
 

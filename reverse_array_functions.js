@@ -1,23 +1,31 @@
 // Your code here.
-function reverseArray(array) {
-    var last = array.length - 1
-        var newarray = []
-        for (var i = last; i >= 0; i--) {
-            newarray.push(array[i]);
-        }
-    return newarray
+function reverseArray(array1) {
+    var last = array1.length - 1;
+    var newarray = [];
+    var i;
+
+    for (i = last; i >= 0; i--) {
+        newarray.push(array1[i]);
+    }
+
+    return newarray;
 }
 
 
 function reverseArrayInPlace(arrayValue) {
-    half = (Math.floor(arrayValue.length / 2));
-        for (i = 0; i < half; i++) {
-            var save = arrayValue[i]
-                var beforelast = arrayValue.length - 1 - i
-                arrayValue[i] = (arrayValue[beforelast]);
-            arrayValue[beforelast] = save;
-        }
-    return arrayValue
+    var half = (Math.floor(arrayValue.length / 2));
+    var i;
+    var save;
+    var beforelast;
+
+    for (i = 0; i < half; i++) {
+        save = arrayValue[i];
+        beforelast = arrayValue.length - 1 - i;
+        arrayValue[i] = arrayValue[beforelast];
+        arrayValue[beforelast] = save;
+    }
+
+    return arrayValue;
 
 }
 console.log(reverseArray(["A", "B", "C"]));

@@ -1,28 +1,39 @@
 function range(start, end, step) {
-	var allnum = []
- 	  if (start < end) {
+    var allnum = [];
+    var ascending;
+    var descending;    
+    if (start < end) {
         if (step === undefined) {
-          var step = 1 }
-        for (var ascending = start; ascending <= end; ascending += step) {
-        allnum.push(ascending);
+             step = 1;
         }
-      } else if (start > end) {
+
+        for (ascending = start; ascending <= end; ascending += step) {
+            allnum.push(ascending);
+        }
+
+    } else if (start > end) {
         if (step === undefined) {
-          var step = -1 }
-        for (var descending = start; descending >= end; descending += step) {
-  		allnum.push(descending);
- 	 	} 
-      }
-  return allnum 
+             step = -1;
+        }
+
+        for (descending = start; descending >= end; descending += step) {
+            allnum.push(descending);
+        } 
+
+    }
+
+    return allnum; 
 }     
 
 
-function sum(array)	{
-  var total = 0 
-  for (var i in array) {
-  	total += array[i];
-  } 
-	return total
+function sum(array1)	{
+    var total = 0; 
+
+    for (var i in array1) {
+        total += array1[i];
+    } 
+
+    return total;
 }
 
 

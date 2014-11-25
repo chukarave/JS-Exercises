@@ -1,5 +1,5 @@
 // Your code here.
-function arrayToList(array1) {   // converts an array into a list by looping over the array backwords and changing the list variable 
+function arrayToList(array1) {   // converts an array into a list by looping over the array backwords and changing the list variable
     var last = array1.length -1;
     var list;
     var i;
@@ -11,9 +11,9 @@ function arrayToList(array1) {   // converts an array into a list by looping ove
     return list;
 }
 
-function listToArray(list) {   // converts a list into an array by looping over the list and pushing list.value into the array.      
+function listToArray(list) {   // converts a list into an array by looping over the list and pushing list.value into the array.
     var node;
-    var array1 = []; 	
+    var array1 = [];
 
     for (node = list; node; node = node.rest) { // navigating to the next list element is done by referring to the list.rest property.
         array1.push(node.value);
@@ -22,8 +22,8 @@ function listToArray(list) {   // converts a list into an array by looping over 
     return array1;
 }
 
-function prepend(element, next) {  // this function gets the value and rest as arguments and creates a new list with them. 
-    var list; 
+function prepend(element, next) {  // this function gets the value and rest as arguments and creates a new list with them.
+    var list;
     list = {value: element, rest: next
     };
 
@@ -50,7 +50,7 @@ function nth(list, num) {
        console.log(list(20));
        }
        else {
-       i++;  
+       i++;
        }
        }
 

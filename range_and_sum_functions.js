@@ -30,7 +30,7 @@ function range(start, end, step) {
 }
 
 
-function sum(array1)	{
+function sum(array1) {
     var total = 0;
     var i;
     var temp;

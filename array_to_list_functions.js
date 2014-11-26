@@ -24,7 +24,9 @@ function listToArray(list) {   // converts a list into an array by looping over 
 
 function prepend(element, next) {  // this function gets the value and rest as arguments and creates a new list with them.
     var list;
-    list = {value: element, rest: next
+    list = {
+        value: element,
+        rest: next
     };
 
     return list;

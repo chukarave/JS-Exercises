@@ -1,13 +1,33 @@
 // Your code here.
+var isNumber = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Number]';
+}
+
+ // Is the given value `NaN`? (NaN is the only number which does not equal itself).
+var isNaN = function(obj) {
+    return isNumber(obj) && obj !== +obj;
+};
 function deepEqual(object, object1) {
     var count = 0;
     var count1 = 0;
     var obj;
     var obj1;
-    if (typeof object !== "object" || typeof object1 !== "object" ||
-            object === null || object1 === null) {
-                return false;
-            }
+    var null1, null2;
+
+    if (isNaN(object) && isNaN(object1)) {  // two identicle arguments that are NaN will still return a false allthough identicle (z.B 0/0)
+        return true;
+    }
+
+    null1 = object === null;
+    null2 = object1 === null;
+    if (
+        typeof object !== "object" ||
+        typeof object1 !== "object" ||
+        (null1 || null2 && !(null1 && null2)) // null1 XOR null2
+    ) {
+        return false;
+    }
+
     // in this case it was better to have negative if conditions, and return false each time they are met.
     // instead of writing an "else" to each condition that fails, the program will just go on to the next block of code.
     // At the end of the function, if no false was returned till then, true will be returned once.
@@ -60,5 +80,6 @@ console.log(deepEqual(obj, {here: 1, object: 2}));
 // → false
 console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
 // → true
-console.log(deepEqual({a: 0/0}, {a: 0/0}));
+console.log(deepEqual({a: NaN}, {a: 0/0}));
 // → false, should be true. This is going to be hard to fix ;)
+console.log(deepEqual({a: null}, {a: null}));

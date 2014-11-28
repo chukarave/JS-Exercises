@@ -4,13 +4,13 @@ function Vector(x, y) {
 } // When a new object instance is created (using 'new'), the constructor allows defining new properties for it.
 // These properties will always exist for that object. 
 
-Vector.prototype.plus = function (newinstance) { // Add the property .plus to the prototype that was created with the instance.
+Vector.prototype.plus = function (newinstance) { // prototype method plus: Add the property .plus to the prototype that was created with the instance
     newx = this.x + newinstance.x;
     newy = this.y + newinstance.y;
     return new Vector(newx, newy); // the property returns a new instance of the Vector object, so as not to change the existing one (that wouldn't work)
 };
 
-Vector.prototype.minus = function (newinstance) {
+Vector.prototype.minus = function (newinstance) { // prototype method minus: Add the property .minus to the prototype that was created with the instance
     newx = this.x - newinstance.x;
     newy = this.y - newinstance.y;
     return new Vector(newx, newy);

@@ -13,9 +13,7 @@ StretchCell.prototype.minHeight = function () { // Prototype minHeight method. s
 };
 
 StretchCell.prototype.draw = function(width, height) {  //draw the cell - take the contents of the inner cell and concatenate empty spaces as many as the cell width.
-    return this.inner.draw(width, height -1)	
-        .concat([repeat(" ", this.width)]);
-
+    return this.inner.draw(width, height);
 }
 
 var sc = new StretchCell(new TextCell("abc"), 1, 2);

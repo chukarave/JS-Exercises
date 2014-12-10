@@ -151,8 +151,8 @@ function World(map, legend) {
 
 /*
  * Inside the World object, a loop is setup
- * in order to set each grid cell with an 
- * element 
+ * in order to set each grid cell with an
+ * element
  */
     map.forEach(function(line, y) {
         for (var x = 0; x < line.length; x++)
@@ -167,7 +167,7 @@ function World(map, legend) {
  * in string form.
  *
  * It loops over both dimensions of the grid
- * and using grid.get gets the charachters placed in 
+ * and using grid.get gets the charachters placed in
  * each cell.
  */
 World.prototype.toString = function() {
@@ -183,8 +183,15 @@ World.prototype.toString = function() {
 };
 
 /*
- * the acted variable is an array of 
+ * the acted variable is an array of critter index numbers
+ * that already had their turn.-
  *
+ * the loop checks if the critter already has a value in its
+ * .act property and if they do not exist in the acted array
+ * and then pushes it to the array.
+ * the it calls the letAct method with the critter and a new
+ * instance of the vector object as arguments.
+ * 'this' is also passed as a third argument and reffers to the world object.
  */
 
 World.prototype.turn = function() {
@@ -196,6 +203,24 @@ World.prototype.turn = function() {
         }
     }, this);
 };
+
+/*
+ * The letAct method gets a critter and a new instance of the vector object
+ * as arguments.
+ *
+ * The action variable is the act method called on the critter
+ * with a new instance of the view object as an argument.
+ * This instance of the view object gets an instance of the world
+ * object (this) and an instance of the vector object.
+ *
+ * If action and action type both return "move", assign the dest
+ * variable with the checkDestination method called on the world object.
+ *
+ * if the destination and grid.get called with the destination as an argument both return null (empty)
+ * the cell in this vector coordinate is set as empty,
+ * and the destination cell gets the critter charachter.
+ */
+
 World.prototype.letAct = function(critter, vector) {
     var action = critter.act(new View(this, vector));
     if (action && action.type == "move") {
@@ -207,6 +232,16 @@ World.prototype.letAct = function(critter, vector) {
     }
 };
 
+/*
+ * checkDestination checks if the directions variable (list of direction
+ * variable with vector object instances assigned to them)
+ * has the property action.direction.
+ * If it does, it sets the dest variable to the plus method called on a vector in order
+ * to add the direction coordinates with the action coordinates.
+ *
+ * If the destination is inside the grid boundries, return the
+ * destination
+ */
 World.prototype.checkDestination = function(action, vector) {
     if (directions.hasOwnProperty(action.direction)) {
         var dest = vector.plus(directions[action.direction]);
@@ -219,7 +254,7 @@ World.prototype.checkDestination = function(action, vector) {
 
 
 
-
+// Constructor for the Wall object.
 
 function Wall() {}
 
@@ -228,11 +263,25 @@ function Wall() {}
 
 
 
+/*
+ * The constructor for the View object gets instances of
+ * the world and vector objects as arguments.
+  */
 
 function View(world, vector) {
     this.world = world;
     this.vector = vector;
 }
+
+/*
+ * The look method gets a direction as an argument a
+ * and assigns the coordinates of the the cell in that direction
+ * (using the vector.plus method on the the world object instance)-
+ * If the cell lies within the grid bounderies it returns
+ * the charachter for the element in that spot.
+ * If the cell lies outside the grid boundries it returns "#"
+ */
+
 View.prototype.look = function(dir) {
     var target = this.vector.plus(directions[dir]);
     if (this.world.grid.isInside(target))
@@ -240,6 +289,13 @@ View.prototype.look = function(dir) {
     else
         return "#";
 };
+
+
+/*
+ * finAll rotates clockwise around the current position
+ * and returns an array of all the directions in which
+ * the charachter passed as an argument is present.
+ */
 View.prototype.findAll = function(ch) {
     var found = [];
     for (var dir in directions)
@@ -247,6 +303,12 @@ View.prototype.findAll = function(ch) {
             found.push(dir);
     return found;
 };
+
+/*
+ * find rotates clockwise in search of a specific
+ * charachter and returns the direction
+ * in which it is to be found.
+ */
 View.prototype.find = function(ch) {
     var found = this.findAll(ch);
     if (found.length === 0) return null;
@@ -255,17 +317,34 @@ View.prototype.find = function(ch) {
 
 
 
+// ----------Wall follower---------
 
-
+/*
+ * dirPlus is a method that allow to compute using direction
+ * it adds the index number of the direction in the directionNames
+ * array with the number passed as argument and 8 and
+ * returns the % 8 of this number.
+ */
 
 function dirPlus(dir, n) {
     var index = directionNames.indexOf(dir);
     return directionNames[(index + n + 8) % 8];
 }
 
+/*
+ * The wall follower constructor
+ * direction is set to south.
+ *
+ */
 function WallFollower() {
     this.dir = "s";
 }
+
+/*
+ * The act method for the WallFollower object.
+ * The method rotates clockwise until it finds an empty square.
+ * It then moves in the direction of that empty square.
+ */
 
 WallFollower.prototype.act = function(view) {
     var start = this.dir;
@@ -279,17 +358,32 @@ WallFollower.prototype.act = function(view) {
 };
 
 
+//--------LIfe like world---------
 
 
-
+// The LifelikeWorld constructor is based on the World object.
 
 function LifelikeWorld(map, legend) {
     World.call(this, map, legend);
 }
+
+// the prototype of the LifelikeWorld is based on the world prototype
 LifelikeWorld.prototype = Object.create(World.prototype);
 
+/*
+ * The different properties of the actionTypes object
+ * are in fact actions.
+ */
 var actionTypes = Object.create(null);
 
+
+/*
+ * The LifelikeWorld.prototype.letAct is similar 
+ * to the same method of the World object, except it checks which 
+ * action is at hand and then adjusts the critter's
+ * energy setting accordingly.
+ * 
+ */
 LifelikeWorld.prototype.letAct = function(critter, vector) {
     var action = critter.act(new View(this, vector));
     var handled = action &&
@@ -303,11 +397,21 @@ LifelikeWorld.prototype.letAct = function(critter, vector) {
     }
 };
 
+
+// The grow property adds energy to the critter.
 actionTypes.grow = function(critter) {
     critter.energy += 0.5;
     return true;
 };
 
+
+/*
+ * The move property is pretty much the same as the 
+ * content of the World.prototype.letAct method;
+ * if the cell in the direction is empty, set the current
+ * vector coordinate to empty, and set the destination
+ * cell to the critter character.
+ */
 actionTypes.move = function(critter, vector, action) {
     var dest = this.checkDestination(action, vector);
     if (dest === null ||
@@ -319,6 +423,16 @@ actionTypes.move = function(critter, vector, action) {
     this.grid.set(dest, critter);
     return true;
 };
+
+/*
+ *  The eat property checks first if there's a valid cell in the 
+ *  given vector (done by variable dest)
+ *  then assigns the value in the cell to atDest
+ *  the checks if it has an energy property 
+ *  and if so takes its energy setting and adds it to the
+ *  energy setting on the critter.
+ */
+
 actionTypes.eat = function(critter, vector, action) {
     var dest = this.checkDestination(action, vector);
     var atDest = dest !== null && this.grid.get(dest);
@@ -328,6 +442,16 @@ actionTypes.eat = function(critter, vector, action) {
     this.grid.set(dest, null);
     return true;
 };
+
+
+/*
+ * The reproduce property has a baby variable which is 
+ * the same charachter of the object which uses the property (this.legend)
+ * The function checks the destination cell and if it is empty 
+ * uses grid.set to set the baby charachter into it.
+ * The critter's energy is down reduces by 2 * baby.energy.
+ */
+
 actionTypes.reproduce = function(critter, vector, action) {
     var baby = elementFromChar(this.legend,
             critter.originChar);
@@ -342,13 +466,24 @@ actionTypes.reproduce = function(critter, vector, action) {
 };
 
 
-
-
-
+/*
+ * The Plant constructor sets the plant energy to a random
+ * number (to be gained by the eating critter) 
+ */
 
 function Plant() {
     this.energy = 3 + Math.random() * 4;
 }
+
+/*
+ * The plant act method checks if the element's 
+ * energy is larger than 15 it reproduces in the direction 
+ * of the next empty space.
+ * 
+ * If the energy is smaller than 20, more energy is added
+ * using .grow.
+ */
+
 Plant.prototype.act = function(context) {
     if (this.energy > 15) {
         var space = context.find(" ");
@@ -360,7 +495,7 @@ Plant.prototype.act = function(context) {
 };
 
 
-
+// 
 
 
 function PlantEater() {

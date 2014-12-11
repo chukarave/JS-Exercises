@@ -162,7 +162,7 @@ function World(map, legend) {
     this.legend = legend;
 
     /*
-     *
+     * 
      * ---What does this loop do exactly?---
      *
      */

@@ -1,6 +1,10 @@
-
-function Vector(x, y) {   // Vector Data type for orientation. The constructor makes sure that two arguments are always passed
-    this.x = x;         // x is translated into a property of the Vector object
+/*
+ * Vector Data type for orientation.
+ * The constructor makes sure that two arguments are always passed.
+ * x and y are translated into a property of the Vector object.
+ */
+function Vector(x, y) {
+    this.x = x;
     this.y = y;
 
 }
@@ -9,25 +13,33 @@ function Vector(x, y) {   // Vector Data type for orientation. The constructor m
  *
  * the prototype gets an addition function:
  * when a critter moves, the values of its x and y
- * properties is added with the
- * property value of another vector object
+ * properties is added to the
+ * property value of another vector object.
  */
 Vector.prototype.plus = function(other) {
     return new Vector(this.x + other.x, this.y + other.y);
 };
 
 
-
-// Represents a grid. Internally Grid is an array resulting from multiplication of the two arguments (width and height)
+/*
+ * The Grid constructor represents a grid.
+ * Internally Grid is an array resulting from multiplication of
+ * the two arguments (width and height).
+ */
 function Grid(width, height) {
     this.space = new Array(width * height);
     this.width = width;
     this.height = height;
 }
-Grid.prototype.isInside = function(vector) { // this method gets a vector object as an argument, and uses its properties to call values
+
+/*
+ * This function looks at the measurments of the
+ * Vector and checks if this vector fits inside the grid.
+ */
+Grid.prototype.isInside = function(vector) {
     return vector.x >= 0 && vector.x < this.width &&
         vector.y >= 0 && vector.y < this.height;
-};// this function looks at the measurments of the Vector and check if this vector fits inside the grid
+};
 
 // gets the content of a cell with the location of x + width * y
 Grid.prototype.get = function(vector) {
@@ -37,6 +49,7 @@ Grid.prototype.get = function(vector) {
 Grid.prototype.set = function(vector, value) {
     this.space[vector.x + this.width * vector.y] = value;
 };
+
 /*
  * forEach method for the grid loops over each
  * cell of the grid and carries out a certain function (argument f).
@@ -149,11 +162,11 @@ function World(map, legend) {
     this.grid = grid;
     this.legend = legend;
 
-/*
- * Inside the World object, a loop is setup
- * in order to set each grid cell with an
- * element
- */
+    /*
+     *
+     * ---What does this loop do exactly?---
+     *
+     */
     map.forEach(function(line, y) {
         for (var x = 0; x < line.length; x++)
         grid.set(new Vector(x, y),
@@ -251,22 +264,15 @@ World.prototype.checkDestination = function(action, vector) {
 };
 
 
-
-
-
 // Constructor for the Wall object.
 
 function Wall() {}
 
 
-
-
-
-
 /*
  * The constructor for the View object gets instances of
  * the world and vector objects as arguments.
-  */
+ */
 
 function View(world, vector) {
     this.world = world;
@@ -378,11 +384,11 @@ var actionTypes = Object.create(null);
 
 
 /*
- * The LifelikeWorld.prototype.letAct is similar 
- * to the same method of the World object, except it checks which 
+ * The LifelikeWorld.prototype.letAct is similar
+ * to the same method of the World object, except it checks which
  * action is at hand and then adjusts the critter's
  * energy setting accordingly.
- * 
+ *
  */
 LifelikeWorld.prototype.letAct = function(critter, vector) {
     var action = critter.act(new View(this, vector));
@@ -406,7 +412,7 @@ actionTypes.grow = function(critter) {
 
 
 /*
- * The move property is pretty much the same as the 
+ * The move property is pretty much the same as the
  * content of the World.prototype.letAct method;
  * if the cell in the direction is empty, set the current
  * vector coordinate to empty, and set the destination
@@ -425,10 +431,10 @@ actionTypes.move = function(critter, vector, action) {
 };
 
 /*
- *  The eat property checks first if there's a valid cell in the 
+ *  The eat property checks first if there's a valid cell in the
  *  given vector (done by variable dest)
  *  then assigns the value in the cell to atDest
- *  the checks if it has an energy property 
+ *  the checks if it has an energy property
  *  and if so takes its energy setting and adds it to the
  *  energy setting on the critter.
  */
@@ -445,9 +451,9 @@ actionTypes.eat = function(critter, vector, action) {
 
 
 /*
- * The reproduce property has a baby variable which is 
+ * The reproduce property has a baby variable which is
  * the same charachter of the object which uses the property (this.legend)
- * The function checks the destination cell and if it is empty 
+ * The function checks the destination cell and if it is empty
  * uses grid.set to set the baby charachter into it.
  * The critter's energy is down reduces by 2 * baby.energy.
  */
@@ -468,7 +474,7 @@ actionTypes.reproduce = function(critter, vector, action) {
 
 /*
  * The Plant constructor sets the plant energy to a random
- * number (to be gained by the eating critter) 
+ * number (to be gained by the eating critter)
  */
 
 function Plant() {
@@ -476,10 +482,10 @@ function Plant() {
 }
 
 /*
- * The plant act method checks if the element's 
- * energy is larger than 15 it reproduces in the direction 
+ * The plant act method checks if the element's
+ * energy is larger than 15 it reproduces in the direction
  * of the next empty space.
- * 
+ *
  * If the energy is smaller than 20, more energy is added
  * using .grow.
  */
@@ -495,12 +501,20 @@ Plant.prototype.act = function(context) {
 };
 
 
-// 
 
+// The constructor for the planteater critter object ("o")
+// starting energy level is 20
 
 function PlantEater() {
     this.energy = 20;
 }
+
+/*
+ * The act function checks the closest charachter
+ * and depending on the energy level and which
+ * charachter it is, decides whether to move,
+ * reproduce or eat.
+ */
 PlantEater.prototype.act = function(context) {
     var space = context.find(" ");
     if (this.energy > 60 && space)
@@ -513,7 +527,13 @@ PlantEater.prototype.act = function(context) {
 };
 
 
-
+/*
+ * The animated world constructor prints
+ * the toString method called on the world
+ * object.
+ * setTimeout allows to set the speed of
+ * printing in miliseconds.
+ */
 
 function animateWorld(world) {
     console.log(world.toString());
@@ -528,7 +548,11 @@ function animateWorld(world) {
 ###########################################################################
 #########################################################################*/
 
-
+/*
+ * The SmartPlantEater can decide whether to eat
+ * a plant now or wait till there are more plants around
+ * and that way make the world more stable.
+ */
 
 // Your code here
 function SmartPlantEater() {
@@ -540,7 +564,6 @@ SmartPlantEater.prototype.act = function(context) {
     var space = context.find(" ");
     this.i++;
 
-  //  console.log("Critter energy " + this.energy)
 
     if (this.energy > 60) {
         if (space) {
@@ -551,9 +574,8 @@ SmartPlantEater.prototype.act = function(context) {
         if (plant && this.i >= this.eat_every && context.findAll("*").length > 0) {
             this.i = 0;
             return {type: "eat", direction: plant};
-        } else {
-            //       console.log("not eating");
         }
+
     }
 
     if (space) {
@@ -562,31 +584,27 @@ SmartPlantEater.prototype.act = function(context) {
 };
 
 
-
-
-
-
 /*
 
-var valley = new LifelikeWorld(
-        ["############################",
-        "#####                 ######",
-        "##   ***                **##",
-        "#   *##**         **  O  *##",
-        "#    ***     O    ##**    *#",
-        "#       O         ##***    #",
-        "#                 ##**     #",
-        "#   O       #*             #",
-        "#*          #**       O    #",
-        "#***        ##**    O    **#",
-        "##****     ###***       *###",
-        "############################"],
-        {"#": Wall,
-            "O": SmartPlantEater,
-    "*": Plant}
-    );
-animateWorld(valley);
-*/
+   var valley = new LifelikeWorld(
+   ["############################",
+   "#####                 ######",
+   "##   ***                **##",
+   "#   *##**         **  O  *##",
+   "#    ***     O    ##**    *#",
+   "#       O         ##***    #",
+   "#                 ##**     #",
+   "#   O       #*             #",
+   "#*          #**       O    #",
+   "#***        ##**    O    **#",
+   "##****     ###***       *###",
+   "############################"],
+   {"#": Wall,
+   "O": SmartPlantEater,
+   "*": Plant}
+   );
+   animateWorld(valley);
+   */
 
 
 function Tiger() {
@@ -598,61 +616,57 @@ Tiger.prototype.act = function(context) {
     var space = context.find(" ");
     var herbivor = context.find("O");
 
-  //  if (context.findAll("O").length > 0) {
-  //          this.i++
-  //          console.log("food here");
-  //     }
-  //  console.log("Tiger energy " + this.energy)
+    //  if (context.findAll("O").length > 0) {
+    //          this.i++
+    //          console.log("food here");
+    //     }
 
-     if (this.energy >= 820) {
-         if (space) {
-           return {type: "reproduce", direction: space};
+    if (this.energy >= 820) {
+        if (space) {
+            return {type: "reproduce", direction: space};
         }
-     } else {
-         if (herbivor) {
-             return {type: "eat", direction: herbivor};
-         }
-     }
+    } else {
+        if (herbivor) {
+            return {type: "eat", direction: herbivor};
+        }
+    }
     if (space) {
-            return {type: "move", direction: space};
-        }
+        return {type: "move", direction: space};
+    }
 
 };
 
 
 
-  //  else if (herbivor && this.i >= this.available_food) {
-     //  this.i = 0;
-
-
-
+//  else if (herbivor && this.i >= this.available_food) {
+//  this.i = 0;
 
 
 
 
 animateWorld(new LifelikeWorld(
-  ["####################################################",
-   "#                 ####         ****              ###",
-   "#   *     ##                 ########       OO    ##",
-   "#   *    ##        O O                 ****       *#",
-   "#       ##*             @          ##########     *#",
-   "#      ##***  *         ****                     **#",
-   "#* **  #  *  ***      #########                  **#",
-   "#* **  #      *               #   *              **#",
-   "#     ##              #   O   #  ***          ######",
-   "#*            @       #       #   *        O  #    #",
-   "#*                    #  ######                 ** #",
-   "###          ****          ***                  ** #",
-   "#       O                        @         O       #",
-   "#   *     ##  ##  ##  ##               ###      *  #",
-   "#   **         #              *       #####  O     #",
-   "##  **  O   O  #  #    ***  ***        ###      ** #",
-   "###               #   *****                    ****#",
-   "####################################################"],
-  {"#": Wall,
-   "@": Tiger,
-   "O": SmartPlantEater, // from previous exercise
-   "*": Plant}
-));
+            ["####################################################",
+            "#                 ####         ****              ###",
+            "#   *     ##                 ########       OO    ##",
+            "#   *    ##        O O                 ****       *#",
+            "#       ##*             @          ##########     *#",
+            "#      ##***  *         ****                     **#",
+            "#* **  #  *  ***      #########                  **#",
+            "#* **  #      *               #   *              **#",
+            "#     ##              #   O   #  ***          ######",
+            "#*            @       #       #   *        O  #    #",
+            "#*                    #  ######                 ** #",
+            "###          ****          ***                  ** #",
+            "#       O                        @         O       #",
+            "#   *     ##  ##  ##  ##               ###      *  #",
+            "#   **         #              *       #####  O     #",
+            "##  **  O   O  #  #    ***  ***        ###      ** #",
+            "###               #   *****                    ****#",
+            "####################################################"],
+            {"#": Wall,
+                "@": Tiger,
+                "O": SmartPlantEater, // from previous exercise
+                "*": Plant}
+                ));
 
 

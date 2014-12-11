@@ -10,7 +10,6 @@ function Vector(x, y) {
 }
 
 /*
- *
  * the prototype gets an addition function:
  * when a critter moves, the values of its x and y
  * properties is added to the
@@ -340,7 +339,6 @@ function dirPlus(dir, n) {
 /*
  * The wall follower constructor
  * direction is set to south.
- *
  */
 function WallFollower() {
     this.dir = "s";
@@ -388,7 +386,6 @@ var actionTypes = Object.create(null);
  * to the same method of the World object, except it checks which
  * action is at hand and then adjusts the critter's
  * energy setting accordingly.
- *
  */
 LifelikeWorld.prototype.letAct = function(critter, vector) {
     var action = critter.act(new View(this, vector));

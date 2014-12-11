@@ -10,7 +10,7 @@ function Vector(x, y) {
 }
 
 /*
- * the prototype gets an addition function:
+ * The prototype gets an addition function:
  * when a critter moves, the values of its x and y
  * properties is added to the
  * property value of another vector object.
@@ -50,7 +50,7 @@ Grid.prototype.set = function(vector, value) {
 };
 
 /*
- * forEach method for the grid loops over each
+ * This forEach method for the grid loops over each
  * cell of the grid and carries out a certain function (argument f).
  * context is a this.value that will be passed with the function.
  */

@@ -1,10 +1,10 @@
 // Fill in the regular expressions
 
-verify(/ca(t|r)/,
+verify(/ca[rt]/,
        ["my car", "bad cats"],
        ["camper", "high art"]);
 
-verify(/p(r?)op/,
+verify(/pr?op/,
        ["pop culture", "mad props"],
        ["plop"]);
 
@@ -12,11 +12,11 @@ verify(/ferr(et|y|ari)/,
        ["ferret", "ferry", "ferrari"],
        ["ferrum", "transfer A"]);
 
-verify(/\wious\b/,
+verify(/\w+ious\b/,
        ["how delicious", "spacious room"],
        ["ruinous", "consciousness"]);
 
-verify(/\s\.|,|:|;/,
+verify(/\s[\.,:;]/,
        ["bad punctuation ."],
        ["escape the dot"]);
 
@@ -24,7 +24,7 @@ verify(/\w{7,}/,
        ["hottentottententen"],
        ["no", "hotten totten tenten"]);
 
-verify(/[^e]/g,
+verify(/\b[^e\s]+\b/g,
        ["red platypus", "wobbling nest"],
        ["earth bed", "learning ape"]);
 
@@ -47,5 +47,5 @@ function verify(regexp, yes, no) {
 
 var text = "'I'm the cook,' he said, 'it's my job.'";
 // Change this call.
-console.log(text.replace(/'|(.'\w), (\W'|'\W), (\w'\w)/g, "$2\""));
+console.log(text.replace(/'([^m])|\W'|'([^t'])\w/g, "\"$1"));
 // → "I'm the cook," he said, "it's my job."

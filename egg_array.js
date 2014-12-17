@@ -1,6 +1,11 @@
-// Modify these definitions...
-
-topEnv["array"] = function(i) {
+/*
+ * The array function gets a different amount of arguments each time.
+ * Since we can prospect the number of arguments the function is 
+ * going to get, it expects none (function())
+ * The "arguments" keyword is an object that is created with each function
+ * and contains the list of arguments as an array-like object
+ */
+topEnv["array"] = function() {
   return Array.prototype.slice.call(arguments, 0);
 };
 

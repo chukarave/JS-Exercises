@@ -1,6 +1,7 @@
 /*
- * As oppiosed to define, which changes the variable name only locally 
- * within a function, set changes the value of a global variable.
+ * As opposed to define, which changes the variable name only locally 
+ * within a function, set changes the value of the variable only if 
+ * it exists in one of the sarrounding scope objects.
  *  
  */
 specialForms["set"] = function(args, env) {

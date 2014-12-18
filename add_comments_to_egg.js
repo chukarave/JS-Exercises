@@ -1,4 +1,8 @@
-// This is the old skipSpace. Modify it...
+/*
+ * finding the comments and cleaning the whitespaces 
+ * require two separate regular expressions; one to
+ * find and replace comments and one to cut whitespaces.
+ */
 function skipSpace(string) {
   string = string.replace(/#.*/, "");
   var first_whitespace = string.search(/\S/);

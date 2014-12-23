@@ -1,16 +1,16 @@
 /*
- * As opposed to define, which changes the variable name only locally 
- * within a function, set changes the value of the variable only if 
+ * As opposed to define, which changes the variable name only locally
+ * within a function, set changes the value of the variable only if
  * it exists in one of the sarrounding scope objects.
- *  
+ *
  */
 specialForms["set"] = function(args, env) {
     // in case one of the arguments is invalid:
     if (args.length != 2 || args[0].type != "word")
         throw new SyntaxError("Bad use of set");
-    var name = args[0].name;    
+    var name = args[0].name;
     var value = evaluate(args[1], env);
-    
+
     /*
      * This loop looks at the object scope and if there's a
      * variable with the same name as args[0], reassigns
@@ -22,7 +22,7 @@ specialForms["set"] = function(args, env) {
             env[name] = value;
             return value;
         }
-    // the loop runs as long as there's an object to assign to env
+        // the loop runs as long as there's an object to assign to env
     } while (env = Object.getPrototypeOf(env));
 
     throw new ReferenceError("Undefined variable " + name);

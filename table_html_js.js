@@ -4,29 +4,34 @@
   td, th { border: 1px solid black; padding: 3px 8px; }
   th     { text-align: left; }
 </style>
-// -------This is WIP------------
+
 <script>
-function buildTable(data) {
-var obj = Object.keys(data);
-var table = document.createElement('table');
+  function buildTable(data) {
+    var headers = Object.keys(data[0]);
+    var table = document.createElement('table');
+    var tr = document.createElement('tr');  
+    table.appendChild(tr);
 
-for (var i in data) {
-var prop = data[i];
-var th = document.createElement('th');
-  prop = document.createTextNode(prop);
-th.appendChild(prop);
-};
+    headers.forEach(function(h) {
+      var th = document.createElement('th');
+      th.textContent =h;
+      tr.appendChild(th);
+    });
+    
+	console.log(data);
+    
+    data.forEach(function(d) { 
+      var tr = document.createElement('tr');
+      table.appendChild(tr);
+      headers.forEach(function(h) { 
+        var td = document.createElement('td');
+        td.textContent = d[h];
+        tr.appendChild(td);
+      });
+    });
 
-for (var i = 0; i < data.length; i++) {
- var child = data[i];
- var td = document.createElement('td');
-     child = document.createTextNode(child);
- td.appendChild(child);
+    return table;
+  };
 
-}
-table = table.appendChild(th);
-
-return table;
-}
-document.body.appendChild(buildTable(MOUNTAINS));
+  document.body.appendChild(buildTable(MOUNTAINS));
 </script>
